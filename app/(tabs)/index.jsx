@@ -1,67 +1,137 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
-import { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Pressable,
+  Image,
+} from "react-native";
+import PostCard from "../components/PostCard";
+import { router } from "expo-router";
+import { useState } from "react";
+
+function PostForm() {
+  const [focused, setFocused] = useState(null);
+  return (
+    <View style={postFormStyles.postForm}>
+      <Image
+        style={postFormStyles.profilePicture}
+        source={require("../../assets/img/JVJ1mcx9ljQK35RatLqGxl2X.png")}
+        placeholder={"banner"}
+        contentFit="cover"
+        transition={1000}
+      ></Image>
+      <View style={postFormStyles.actionPost}>
+        <Text>What's on your mind</Text>
+      </View>
+      <Pressable
+        onPress={() => {
+          setFocused("Story");
+          console.log(focused);
+        }}
+        style={[
+          postFormStyles.actionStory,
+          focused === "Story" ? styles.focused : null,
+        ]}
+      >
+        <Text>+</Text>
+      </Pressable>
+    </View>
+  );
+}
 
 export default function HomeScreen() {
-    const [studentList, setStudentList] = useState([
-        { id: 1, name: "Patrick", course: "CpE", year: "4th Year", enrolled: true },
-        { id: 2, name: "Chiz", course: "IT", year: "3rd Year", enrolled: false },
-        { id: 3, name: "Gran", course: "CS", year: "2nd Year", enrolled: true },
-        { id: 4, name: "Marr", course: "ICT", year: "3rd Year", enrolled: false },
-    ]);
-
-    function goToDetail(id, name, course, year, enrolled) {
-        const concatenatedParams = `${id},${name},${course},${year},${enrolled}`;
-        router.push(`/detail?data=${concatenatedParams}`);
-    }
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Home</Text>
-            <Text style={styles.subtitle}>Welcome to the app!</Text>
-
-            <View style={styles.btnContainer}>
-                {studentList.map(student => (
-                    <TouchableOpacity key={student.id} style={styles.button} onPress={() => goToDetail(student.id, student.name, student.course, student.year, student.enrolled)}>
-                        <Text style={styles.btnText}>{student.name}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>            
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={bannerStyles.mainBannerContainer}>
+          <Image
+            style={bannerStyles.mainBanner}
+            source={require("../../assets/img/Banner_Gif.jpg")}
+            placeholder={"banner"}
+            contentFit="cover"
+            transition={1000}
+          ></Image>
         </View>
-    );
+        <PostForm />
+        <View style={styles.feedContainer}>
+          <PostCard
+            post={{
+              author: "John Doe",
+              timestamp: "2hrs",
+              content:
+                "Fsdadskk ajwadsaj gawasda aodaojjajsjg adad ariaaadass dads",
+            }}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 12,
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 24,
-    },
-    button: { 
-        backgroundColor: '#0EA5E9',
-        paddingVertical: 14, 
-        paddingHorizontal: 32, 
-        borderRadius: 10 
-    },
-    btnContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 16,
-    },
-    btnText: { 
-        color: '#fff', 
-        fontSize: 16, 
-        fontWeight: 'bold' 
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  page: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  feedContainer: {
+    display: "flex",
+    backgroundColor: "#ebebeb",
+    flexDirection: "column",
+    paddingVertical: 14,
+    gap: 12,
+  },
+  focused: {
+    backgroundColor: "#0509124e",
+  },
+});
+const postFormStyles = StyleSheet.create({
+  postForm: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    padding: 14,
+    backgroundColor: "#ffffff",
+  },
+  actionPost: {
+    flex: 4,
+    justifyContent: "center",
+    padding: 12,
+    height: "100%",
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 50,
+  },
+  actionStory: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 24,
+    width: 24,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: "#000",
+  },
+  profilePicture: {
+    width: 48,
+    height: 48,
+    borderRadius: "50%",
+    backgroundColor: "#000",
+  },
+});
+
+const bannerStyles = StyleSheet.create({
+  mainBannerContainer: {
+    backgroundColor: "#0000004d",
+  },
+  mainBanner: {
+    width: "100%",
+    aspectRatio: "4/3",
+  },
 });
